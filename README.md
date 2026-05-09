@@ -13,7 +13,7 @@ The project keeps OpenMV responsible for image acquisition and moves the heavier
 
 ![Dice stacking demo](assets/6dice_stack_demo.gif)
 
-The GIF above is compressed and sped up for README viewing. Open the original video for the full-resolution demo:
+The GIF above is compressed and sped up 2x for README viewing. Open the original video for the full-resolution demo:
 
 [Watch the dice stacking demo](assets/6dice_stack.mp4)
 

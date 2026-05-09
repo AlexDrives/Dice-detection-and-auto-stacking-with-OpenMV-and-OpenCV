@@ -11,9 +11,9 @@ The project keeps OpenMV responsible for image acquisition and moves the heavier
 
 ## Demo
 
-<video src="assets/6dice_stack.mp4" controls width="720"></video>
+![Dice stacking demo](assets/6dice_stack_demo.gif)
 
-If your Markdown viewer does not render embedded video, open the demo directly:
+The GIF above is compressed and sped up for README viewing. Open the original video for the full-resolution demo:
 
 [Watch the dice stacking demo](assets/6dice_stack.mp4)
 

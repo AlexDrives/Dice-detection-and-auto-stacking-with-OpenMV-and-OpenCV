@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Jupyter scratch notebooks and checkpoints
+.ipynb_checkpoints/
+*.ipynb
+
+# Local capture/output data
+captures/
+results/
+logs/
+coords/*
+!coords/
+!coords/semi_auto_calibration_points.csv
+
+# Large or machine-generated media
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.docx
+docs/*.pdf
+世界---像素.txt
+
+# Extracted third-party application bundle
+_official_arm_app_asar/
+
+# Camera calibration raw images and generated outputs
+相机标定/images/
+相机标定/images_paper_9p63/
+相机标定/images_paper_9p63_all23/
+相机标定/output*/
+相机标定/*.aux
+相机标定/*.log
+相机标定/明天标定操作指南.md
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

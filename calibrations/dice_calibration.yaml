@@ -1,0 +1,33 @@
+# Pixel-to-world calibration for dice_sequence_processor.py
+#
+# The correspondences follow the image layout and the robot left-handed world
+# coordinate convention. Dice values and pixel positions are paired directly.
+# This is the confirmed quadratic mapping relation using the current stable
+# pixel centers from the latest detection logs.
+
+model: quadratic
+
+points:
+  - label: 1
+    pixel: [166.0, 92.0]
+    world: [188.1, -17.0]
+
+  - label: 2
+    pixel: [105.0, 97.0]
+    world: [188.1, 0.0]
+
+  - label: 3
+    pixel: [217.0, 96.0]
+    world: [190.0, -30.0]
+
+  - label: 4
+    pixel: [212.0, 28.5]
+    world: [223.0, -30.0]
+
+  - label: 5
+    pixel: [106.0, 27.0]
+    world: [222.6, 0.9]
+
+  - label: 6
+    pixel: [146.0, 152.0]
+    world: [160.0, 10.0]

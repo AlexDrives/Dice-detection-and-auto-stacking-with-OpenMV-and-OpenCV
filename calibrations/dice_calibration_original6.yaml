@@ -1,0 +1,35 @@
+# Original six-point calibration used for the processor mapping.
+# This keeps the earlier fitted quadratic relation:
+# 1 -> pixel(166,92)  -> world(188.1,-17.0)
+# 2 -> pixel(105,97)  -> world(188.1,0.0)
+# 3 -> pixel(216,96)  -> world(190.0,-30.0)
+# 4 -> pixel(174,24)  -> world(223.1,-18.6)
+# 5 -> pixel(106,27)  -> world(222.6,0.9)
+# 6 -> pixel(145,150) -> world(160.0,10.0)
+
+model: quadratic
+
+points:
+  - label: 1
+    pixel: [166.0, 92.0]
+    world: [188.1, -17.0]
+
+  - label: 2
+    pixel: [105.0, 97.0]
+    world: [188.1, 0.0]
+
+  - label: 3
+    pixel: [216.0, 96.0]
+    world: [190.0, -30.0]
+
+  - label: 4
+    pixel: [174.0, 24.0]
+    world: [223.1, -18.6]
+
+  - label: 5
+    pixel: [106.0, 27.0]
+    world: [222.6, 0.9]
+
+  - label: 6
+    pixel: [145.0, 150.0]
+    world: [160.0, 10.0]

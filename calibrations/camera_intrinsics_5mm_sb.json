@@ -1,0 +1,113 @@
+{
+  "image_width": 320,
+  "image_height": 240,
+  "inner_cols": 9,
+  "inner_rows": 6,
+  "square_size_mm": 5.0,
+  "rms_reprojection_error_px": 0.1566872719181196,
+  "camera_matrix": [
+    [
+      542.2627179417547,
+      0.0,
+      126.17718318451004
+    ],
+    [
+      0.0,
+      543.8679369160561,
+      92.04951787698046
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "distortion_coefficients": [
+    -0.40550468196829975,
+    0.21012278099855908,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "images": [
+    {
+      "file": "images\\calib_001.jpg",
+      "found": true,
+      "reprojection_error_px": 0.11280672922138903
+    },
+    {
+      "file": "images\\calib_002.jpg",
+      "found": true,
+      "reprojection_error_px": 0.10118875109364053
+    },
+    {
+      "file": "images\\calib_003.jpg",
+      "found": true,
+      "reprojection_error_px": 0.13950681734852863
+    },
+    {
+      "file": "images\\calib_004.jpg",
+      "found": true,
+      "reprojection_error_px": 0.16920816239979558
+    },
+    {
+      "file": "images\\calib_005.jpg",
+      "found": true,
+      "reprojection_error_px": 0.16740032238192096
+    },
+    {
+      "file": "images\\calib_006.jpg",
+      "found": true,
+      "reprojection_error_px": 0.12906043252465682
+    },
+    {
+      "file": "images\\calib_007.jpg",
+      "found": false
+    },
+    {
+      "file": "images\\calib_008.jpg",
+      "found": true,
+      "reprojection_error_px": 0.157196271375819
+    },
+    {
+      "file": "images\\calib_009.jpg",
+      "found": true,
+      "reprojection_error_px": 0.15337855445689477
+    },
+    {
+      "file": "images\\calib_010.jpg",
+      "found": true,
+      "reprojection_error_px": 0.17255343929940647
+    },
+    {
+      "file": "images\\calib_011.jpg",
+      "found": true,
+      "reprojection_error_px": 0.14616076758252977
+    },
+    {
+      "file": "images\\calib_012.jpg",
+      "found": true,
+      "reprojection_error_px": 0.10127921362878188
+    },
+    {
+      "file": "images\\calib_013.jpg",
+      "found": true,
+      "reprojection_error_px": 0.18978898886579076
+    },
+    {
+      "file": "images\\calib_014.jpg",
+      "found": true,
+      "reprojection_error_px": 0.2392648650356818
+    },
+    {
+      "file": "images\\calib_015.jpg",
+      "found": true,
+      "reprojection_error_px": 0.18189896242025444
+    },
+    {
+      "file": "images\\calib_016.jpg",
+      "found": true,
+      "reprojection_error_px": 0.12860957604697248
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+# Dice stacking pipeline parameters for dice_stack_pipeline.py
+
+# Camera pixel-to-world calibration generated from the 20-point model.
+calibration: calibrations/dice_homography_20pt_quadratic_corrected.json
+
+# true: homography + quadratic residual correction.
+# false: homography only.
+use_quadratic_correction: false
+
+# Input dice pickup plane. Detected dice coordinates are 2D; this Z is used.
+pickup_z: 80.0
+
+# Dice height in world-coordinate units, normally millimeters.
+dice_height: 16.5
+
+# Fixed stacking target. The placed Z is:
+# target.z + stack_index * dice_height
+target:
+  x: 205.0
+  y: 50.0
+  z: 65.0
+
+# Safe Z above the current stack top while carrying a dice.
+# For dice i, safe_z = max(pickup_z, target.z + i*dice_height) + safe_margin_z
+safe_margin_z: 30.0
+
+# Motion command time parameter.
+move_time: 360
+
+# Pure up/down moves use DescartesLine and this time.
+vertical_move_time: 520
+
+# Lift after release is also a straight-line move.
+release_lift_time: 640
+
+# Serial command speed.
+speed: 50
+
+# Camera/recognition pose. The robot moves here before and after stacking.
+recognition_pose:
+  x: 301.6
+  y: 0.0
+  z: 304.2
+  time: 100
+move_to_recognition_at_start: true
+move_to_recognition_at_end: true
+
+# Extra delay only used when --send is enabled.
+send_delay_seconds: 0.15
+suction_delay_seconds: 0.2
+suction_repeat: 2
+suction_settle_seconds: 0.5
+wait_command: Wait
+
+# Command switches.
+emit_speed_command: true
+start_with_suction_off: true
+end_with_suction_off: true
+lift_after_release: true
+
+# Command names supported by the current serial GUI/controller.
+point_command: DescartesPoint
+line_command: DescartesLine
+suction_command: Suction
+speed_command: Speed

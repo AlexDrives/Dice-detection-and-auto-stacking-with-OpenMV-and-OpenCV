@@ -1,0 +1,45 @@
+# Dice stacking parameters for dice_stack_commands.py
+
+# Dice pickup plane. Input coordinates are 2D; this Z is used by default.
+pickup_z: 80.0
+
+# Dice height in world-coordinate units, normally millimeters.
+dice_height: 16.5
+
+# Fixed stacking target. The placed Z is:
+# target.z + stack_index * dice_height
+target:
+  x: 205.0
+  y: 50.0
+  z: 65.0
+
+# Safe Z above the current stack top while carrying a dice.
+# For dice i, safe_z = max(pickup_z, target.z + i*dice_height) + safe_margin_z
+safe_margin_z: 30.0
+
+# Motion command time parameter used in DescartesPoint_X,Y,Z,T,
+move_time: 360
+
+# Use a slower move for pure up/down motions at the same x/y.
+vertical_move_time: 520
+
+# Use a slower move right after releasing a dice before lifting away.
+release_lift_time: 640
+release_lift_speed: 10
+
+# Sent once before the sequence.
+speed: 50
+
+# Extra delay only used when --send is enabled.
+send_delay_seconds: 0.15
+suction_delay_seconds: 0.2
+
+# Extra press offset when picking from the stack top during restore.
+# Negative means press lower than the nominal stack layer height.
+stack_pick_press_offset: -2.0
+
+# Command switches.
+emit_speed_command: true
+lift_after_release: true
+start_with_suction_off: true
+end_with_suction_off: true

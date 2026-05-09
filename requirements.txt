@@ -1,0 +1,7 @@
+opencv-python>=4.8
+numpy>=1.24
+pyserial>=3.5
+PyYAML>=6.0
+
+# Optional: only needed for yolo_dice_infer.py
+ultralytics>=8.0

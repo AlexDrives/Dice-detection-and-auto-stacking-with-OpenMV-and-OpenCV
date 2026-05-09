@@ -1,0 +1,30 @@
+# Original six-point correspondences with a homography model.
+# The transform is determined by planar projective mapping; four points are
+# sufficient in theory, and the six points here are fit by least squares.
+
+model: homography
+
+points:
+  - label: 1
+    pixel: [166.0, 92.0]
+    world: [188.1, -17.0]
+
+  - label: 2
+    pixel: [105.0, 97.0]
+    world: [188.1, 0.0]
+
+  - label: 3
+    pixel: [216.0, 96.0]
+    world: [190.0, -30.0]
+
+  - label: 4
+    pixel: [174.0, 24.0]
+    world: [223.1, -18.6]
+
+  - label: 5
+    pixel: [106.0, 27.0]
+    world: [222.6, 0.9]
+
+  - label: 6
+    pixel: [145.0, 150.0]
+    world: [160.0, 10.0]

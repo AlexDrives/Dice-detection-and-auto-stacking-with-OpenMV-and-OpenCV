@@ -9,6 +9,14 @@ The project keeps OpenMV responsible for image acquisition and moves the heavier
 3. convert pixel coordinates to world coordinates with calibration data
 4. generate and optionally send robot stacking commands
 
+## Demo
+
+<video src="assets/6dice_stack.mp4" controls width="720"></video>
+
+If your Markdown viewer does not render embedded video, open the demo directly:
+
+[Watch the dice stacking demo](assets/6dice_stack.mp4)
+
 ## Repository Contents
 
 Core scripts:

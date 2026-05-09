@@ -26,6 +26,8 @@ coords/*
 *.avi
 *.mov
 *.mkv
+!assets/
+!assets/*.mp4
 *.docx
 docs/*.pdf
 世界---像素.txt

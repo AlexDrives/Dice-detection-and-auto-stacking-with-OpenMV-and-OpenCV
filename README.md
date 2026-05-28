@@ -1,128 +1,151 @@
-# OpenMV 骰子识别与自动堆叠
+# Dice Detection and Auto Stacking with OpenMV and OpenCV
 
-这个项目是一套基于 OpenMV + OpenCV 的骰子识别和自动堆叠流程。OpenMV 主要负责采集图像，PC 端负责更重的视觉处理、像素坐标到机械臂世界坐标的映射，以及吸盘机械臂堆叠指令的生成和发送。
+Open-source repository: <https://github.com/AlexDrives/Dice-detection-and-auto-stacking-with-OpenMV-and-OpenCV>
 
-整体流程：
+This project implements a complete dice recognition and robotic stacking pipeline. OpenMV is used for image capture, while the PC side uses OpenCV for camera undistortion, dice segmentation, pip recognition, center localization, pixel-to-robot calibration, and serial command generation for a suction-based robotic arm.
 
-1. OpenMV 拍摄骰子图像
-2. PC 端识别骰子中心和点数
-3. 根据标定数据把像素坐标转换成世界坐标
-4. 生成机械臂堆叠指令，并可选择通过串口发送
+The calibration and final stacking demonstration were performed on **Robotic Arm No. 5**. If the camera pose, table height, suction tool, or robotic arm changes, the pixel-to-world calibration must be collected again.
 
-## 演示
+## Demo
 
-![骰子自动堆叠演示](assets/6dice_stack_demo.gif)
+![Six-dice auto stacking demo](assets/readme/demo.gif)
 
-上面的 GIF 已压缩并加速 2 倍，适合在 README 中快速预览。完整清晰版视频可以打开这里：
+In the final demonstration, the system recognized, picked, and stacked **6 dice in 26 seconds**.
 
-[查看原始演示视频](assets/6dice_stack.mp4)
+## Key Results
 
-## 仓库内容
+- Single-frame batch recognition: **27 dice coordinates and values**.
+- Pixel-to-world calibration: **418 semi-automatic calibration points** plus **20 original manual points**.
+- Best calibration model: Homography + quadratic residual correction.
+- Validation error: **0.740 mm mean error**, **0.970 mm RMSE**.
+- Camera working height above the dice plane: approximately **224.2 mm**.
 
-核心脚本：
+## Visual Pipeline
 
-- `pc_openmv_capture_once.py`：触发 OpenMV 拍摄，并通过串口 REPL 把 JPG 图像拉回 PC。
-- `pc_openmv_serial_pull.py`：从 OpenMV 串口拉取已经拍好的图像批次。
-- `pc_openmv_disk_capture.py`：当 OpenMV 以 U 盘形式挂载时，直接从盘符复制图像。
-- `pc_dice_detect.py`：基于 OpenCV 的本地图像骰子检测脚本。
-- `yolo_dice_infer.py`：可选的 Ultralytics YOLO 骰子检测入口。
-- `camera_undistort.py`：相机内参读取和图像去畸变工具。
-- `validate_calibration_models.py`：验证像素坐标到世界坐标的标定模型。
-- `dice_stack_pipeline.py`：从检测结果到堆叠指令的完整流水线。
-- `dice_stack_commands.py`：根据世界坐标生成堆叠命令。
-- `dice_restore_commands.py`：根据世界坐标生成还原命令。
+### 1. Dice Detection and Pip Recognition
 
-配置和标定文件：
+The OpenCV pipeline segments bright dice bodies, extracts pips from connected components or color masks, classifies pip geometry, and outputs dice values with grasp-friendly pip centers.
 
-- `dice_stack_config.yaml`：简单堆叠/还原脚本使用的机械臂参数。
-- `dice_stack_pipeline_config.yaml`：完整流水线使用的参数。
-- `calibrations/`：相机内参、像素到世界坐标映射等标定文件。
-- `coords/semi_auto_calibration_points.csv`：用于标定验证的人工确认点。
-- `相机标定/`：棋盘格生成和 OpenCV 相机标定工具。
+![Dice detection result](assets/readme/dice_annotated.png)
 
-本地采集和调试输出不会上传到 Git，例如 `captures/`、`results/`、`logs/`、原始标定图片、Jupyter Notebook、临时视频和第三方解包文件。
+### 2. Dense Multi-Dice Recognition
 
-## 环境要求
+The same pipeline can process densely placed dice in one frame. The example below contains 27 recognized dice.
 
-推荐使用 Python 3.10 或更高版本。
+![27 dice recognition result](assets/readme/dice_27_annotated.png)
 
-安装基础依赖：
+### 3. Camera Undistortion
 
-```powershell
-pip install -r requirements.txt
-```
+Checkerboard images are used to estimate camera intrinsics. Images are undistorted before segmentation and coordinate conversion.
 
-如果只使用 OpenCV 检测流程，可以不训练 YOLO；`ultralytics` 只在运行 `yolo_dice_infer.py` 时需要。使用 OpenMV 串口工具时，请确认开发板已经出现在系统串口中，例如 `COM17`。
+![Checkerboard undistortion sheet](assets/readme/checkerboard_undistort_sheet.png)
 
-## 快速开始
+### 4. Semi-Automatic Calibration
 
-从 OpenMV 采集一批新图像：
+Semi-automatic data collection expands the calibration coverage and validates the mapping from image pixels to robotic-arm world coordinates.
 
-```powershell
-python pc_openmv_capture_once.py --port COM17 --expected 6
-```
+![Semi-auto calibration detection](assets/readme/semi_auto_annotated.png)
 
-图像会保存到：
+![Calibration point distribution](assets/readme/calibration_distribution.png)
+
+## Repository Structure
 
 ```text
-captures/openmv_YYYYMMDD_HHMMSS/
+.
+├── pc_openmv_capture_once.py          # Trigger OpenMV capture and pull JPG files
+├── pc_openmv_serial_pull.py           # Pull existing images from OpenMV over serial REPL
+├── pc_dice_detect.py                  # OpenCV dice detection, value recognition, center extraction
+├── camera_undistort.py                # Camera intrinsic loading and image undistortion
+├── validate_calibration_models.py     # Calibration model validation
+├── dice_stack_pipeline.py             # Detection JSON/CSV to world coordinates and stack commands
+├── dice_stack_pipeline_config.yaml    # Robotic-arm and stacking parameters
+├── calibrations/                      # Camera and pixel-to-world calibration files
+├── coords/                            # Calibration points and world-coordinate samples
+├── results/                           # Selected detection and validation results
+├── notebooks/                         # Development/debug notebooks in upload_package
+├── assets/                            # Demo GIF/video and README figures
+└── upload_package/                    # Reproducible package for submission
 ```
 
-对某个采集目录运行 OpenCV 骰子检测：
+## Installation
+
+Python 3.10 or newer is recommended.
 
 ```powershell
-python pc_dice_detect.py --input captures/openmv_YYYYMMDD_HHMMSS --body-threshold 180 --save-binary
+python -m pip install -r requirements.txt
 ```
 
-如果光照变化明显，可以对比 `170`、`175`、`180`、`185` 等阈值，并查看保存的二值图。
+The OpenCV pipeline uses `opencv-python`, `numpy`, `pyserial`, and `PyYAML`. `ultralytics` is only needed for the optional YOLO script; the reported results use the OpenCV pipeline.
 
-根据世界坐标 CSV 或 JSON 生成堆叠指令：
+## Quick Reproduction Without Hardware
+
+The repository includes a saved 27-dice detection JSON. You can generate world coordinates and stacking commands without connecting OpenMV or the robotic arm:
 
 ```powershell
-python dice_stack_commands.py --coords-file coords/example_world_coords.csv
+python dice_stack_pipeline.py `
+  --input results\dice_detect_single_frame_check\frame_01.json `
+  --commands-out results\stack_commands_preview.txt `
+  --output-json results\stack_pipeline_preview.json
 ```
 
-使用完整流水线处理已经生成的检测结果：
+To rerun calibration validation:
 
 ```powershell
-python dice_stack_pipeline.py --input results/dice_detect/frame_01.json
+python validate_calibration_models.py
 ```
 
-真正连接机械臂发送指令前，请先检查 `dice_stack_pipeline_config.yaml`。其中的运动范围、拾取高度、堆叠目标点、吸盘延时和串口指令名都需要与你的机械臂控制器一致。
+Expected validation summary:
 
-## 相机标定
+```text
+homography_quadratic_residual: mean=0.740 mm, rmse=0.970 mm, p95=1.725 mm
+```
 
-`相机标定/` 目录中提供了棋盘格生成和相机内参标定工具：
+## Capturing New Images with OpenMV
+
+Connect the OpenMV board and replace `COM17` with the actual serial port:
 
 ```powershell
-cd 相机标定
-python generate_checkerboard.py
-python calibrate_camera.py --annotate --undistort-sample
+python pc_openmv_capture_once.py --port COM17 --expected 1
 ```
 
-生成的相机内参可以复制到 `calibrations/`，并在检测时传入：
+Then run dice detection on a captured image or folder:
 
 ```powershell
-python pc_dice_detect.py --input captures/openmv_YYYYMMDD_HHMMSS --intrinsics calibrations/camera_intrinsics_paper_9p63_simple.json
+python pc_dice_detect.py `
+  --input captures\openmv_YYYYMMDD_HHMMSS `
+  --save-dir results\dice_detect_new `
+  --body-threshold 180 `
+  --save-binary `
+  --intrinsics calibrations\camera_intrinsics_paper_9p63_simple.json
 ```
 
-## YOLO 检测方案
+The detector outputs annotated images, binary masks, and JSON files. The JSON file can then be passed to `dice_stack_pipeline.py`.
 
-如果已经训练好骰子检测模型，可以运行：
+## Sending Commands to the Robotic Arm
+
+First generate commands without sending them. After confirming the command sequence and hardware safety, add `--send`:
 
 ```powershell
-python yolo_dice_infer.py --model best.pt --source 0 --show
+python dice_stack_pipeline.py `
+  --input results\dice_detect_single_frame_check\frame_01.json `
+  --send --port COM15
 ```
 
-推荐类别名为 `d1`、`d2`、`d3`、`d4`、`d5`、`d6`。脚本会把类别名映射成骰子点数，并输出每一帧的检测中心。
+The serial port and motion parameters must match the local controller. The provided calibration is for **Robotic Arm No. 5** only.
 
-## 注意事项
+## Notebooks and Submission Package
 
-- 当前参数针对特定 OpenMV 相机、光照、标定板高度和机械臂坐标系调过。
-- 更换相机位置、镜头、放置平面高度或机械结构后，需要重新标定。
-- 在真正控制硬件前，建议先不加 `--send`，只检查生成的指令是否合理。
-- 机械臂运动有风险，请先低速、空载、单步验证。
+`upload_package/` contains a teacher-friendly reproducible package:
 
-## 许可证
+- source code and configs,
+- calibration files,
+- selected result examples,
+- demo assets,
+- report PDF/TEX,
+- notebooks for capture, detection, coordinate conversion, calibration, and serial command debugging.
 
-本项目使用 MIT License，详见 `LICENSE`。
+See `upload_package/README.md` for the full reproduction guide.
+
+## License
+
+This project is released under the MIT License.
